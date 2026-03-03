@@ -7,7 +7,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,6 +57,7 @@ BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_KERNEL_SECOND_OFFSET := 0xbff88000
 BOARD_RAMDISK_OFFSET := 0x07c08000
 BOARD_DTB_OFFSET := 0x0bc08000
+
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 TARGET_KERNEL_ARCH := arm64
@@ -100,9 +101,10 @@ PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_SUPPRESS_SECURE_ERASE := true
 
-# Partitions configs
+# Recovery in Boot (A/B)
 BOARD_USES_RECOVERY_AS_BOOT := true
 TARGET_NO_RECOVERY := true
+TW_HAS_NO_RECOVERY_PARTITION := true
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
@@ -112,11 +114,10 @@ BOARD_ROOT_EXTRA_FOLDERS += metadata tranfs
 BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 
 # Dynamic Partitions
-
-BOARD_SUPER_PARTITION_SIZE := 9126805504 # TODO: Fix hardcoded value
+BOARD_SUPER_PARTITION_SIZE := 9126805504
 BOARD_SUPER_PARTITION_GROUPS := infinix_dynamic_partitions
 BOARD_INFINIX_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product system_ext
-BOARD_INFINIX_DYNAMIC_PARTITIONS_SIZE := 9122611200 # TODO: Fix hardcoded value
+BOARD_INFINIX_DYNAMIC_PARTITIONS_SIZE := 9122611200
 
 # File systems
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -126,6 +127,7 @@ BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USES_MKE2FS := true
 
 TARGET_COPY_OUT_SYSTEM := system
 TARGET_COPY_OUT_PRODUCT := product
@@ -135,31 +137,24 @@ TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 # AB
 AB_OTA_UPDATER := true
 
-# Recovery
+# Recovery UI & Settings
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
-BOARD_USES_RECOVERY_AS_BOOT := true
-TARGET_NO_RECOVERY := true
-TW_NO_SCREEN_BLANK := true
-TW_HAS_NO_RECOVERY_PARTITION := true
-
-# TWRP specific build flags
 TW_THEME := portrait_hdpi
-RECOVERY_SDCARD_ON_DATA := true							  
-TARGET_USES_MKE2FS := true
+RECOVERY_SDCARD_ON_DATA := true
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
-TW_EXTRA_LANGUAGES := false
+TW_EXTRA_LANGUAGES := true
 TW_DEFAULT_LANGUAGE := ru
 TW_INCLUDE_NTFS_3G := true
 TW_USE_TOOLBOX := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TW_INCLUDE_LPTOOLS := true
-TW_SCREEN_BLANK_ON_BOOT := true
-TW_NO_SCREEN_BLANK := true
+TW_INCLUDE_FASTBOOTD := true
 
 # Display
+TW_SCREEN_BLANK_ON_BOOT := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
@@ -170,9 +165,10 @@ TW_CUSTOM_CPU_POS := "300"
 TW_CUSTOM_CLOCK_POS := "70"
 TW_CUSTOM_BATTERY_POS := "790"
 
-# resetprop and magiskboot
-TW_INCLUDE_REPACKTOOLS := true
+# Magiskboot & Resetprop (FIXED)
+TW_INCLUDE_REPACKING := true
 TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_LIBRESETPROP := true
 TW_EXCLUDE_APEX := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
@@ -180,4 +176,4 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.
 TW_BACKUP_EXCLUSIONS := /data/fonts/files
 
 # Device 
-TW_DEVICE_VERSION := X6716 by SK
+TW_DEVICE_VERSION := X6716_Fixed_by_Us
