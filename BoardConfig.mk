@@ -177,10 +177,3 @@ TW_BACKUP_EXCLUSIONS := /data/fonts/files
 
 # Device 
 TW_DEVICE_VERSION := X6716_Fixed_by_Us
-
-# Remove
-TW_EXTRA_LANGUAGES := false
-TW_INCLUDE_NTFS_3G := false
-TW_INCLUDE_FB2PNG := false
-TW_EXCLUDE_NANO := true
-TW_EXCLUDE_BASH := true
