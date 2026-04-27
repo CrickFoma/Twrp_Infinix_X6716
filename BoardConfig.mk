@@ -168,3 +168,6 @@ TW_BACKUP_EXCLUSIONS := /data/fonts/files
 
 # Device 
 TW_DEVICE_VERSION := X6716 by SK (FBEv2)
+
+# Bypass ELF check for prebuilt binaries in PRODUCT_COPY_FILES
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
