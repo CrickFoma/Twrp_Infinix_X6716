@@ -1,22 +1,10 @@
-# TWRP specific#
+#
 # Copyright (C) 2020 The Android Open Source Project
 # Copyright (C) 2020 The TWRP Open Source Project
 # Copyright (C) 2020 SebaUbuntu's TWRP device tree generator
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# Licensed under the Apache License, Version 2.0
 
-# Allow building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
 
 DEVICE_PATH := device/infinix/X6716
@@ -45,9 +33,7 @@ TARGET_BOARD_PLATFORM := mt6768
 TARGET_USES_UEFI := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
-BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
-
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.force_normal_boot=1
 BOARD_NAME := CY-X6716-H6929
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_BOOTIMG_HEADER_VERSION := 2
@@ -57,11 +43,10 @@ BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_KERNEL_SECOND_OFFSET := 0xbff88000
 BOARD_RAMDISK_OFFSET := 0x07c08000
 BOARD_DTB_OFFSET := 0x0bc08000
-
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 TARGET_KERNEL_ARCH := arm64
-BOARD_INCLUDE__DTB_IN_BOOTIMG := true
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
 BOARD_MKBOOTIMG_ARGS += --board $(BOARD_NAME)
@@ -91,20 +76,25 @@ BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 3
 
-# Hack to get keymaster to recognize the key files
-PLATFORM_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 12.0.0
+# === НАСТРОЙКИ ПЛАТФОРМЫ И ШИФРОВАНИЯ (ИЗМЕНЕНО ДЛЯ FBEv2) ===
+PLATFORM_VERSION := 13
+PLATFORM_VERSION_LAST_STABLE := 13
+PLATFORM_SECURITY_PATCH := 2023-08-05
 VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
+
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+TW_USE_FSCRYPT_POLICY := 2
+TW_PREPARE_DATA_MEDIA_EARLY := true
 
 # System as root
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_SUPPRESS_SECURE_ERASE := true
 
-# Recovery in Boot (A/B)
+# Partitions configs
 BOARD_USES_RECOVERY_AS_BOOT := true
 TARGET_NO_RECOVERY := true
-TW_HAS_NO_RECOVERY_PARTITION := true
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
@@ -137,24 +127,28 @@ TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 # AB
 AB_OTA_UPDATER := true
 
-# Recovery UI & Settings
+# Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+TW_HAS_NO_RECOVERY_PARTITION := true
+
+# TWRP specific build flags
 TW_THEME := portrait_hdpi
-RECOVERY_SDCARD_ON_DATA := true
+RECOVERY_SDCARD_ON_DATA := true							  
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
-TW_EXTRA_LANGUAGES := true
+TW_EXTRA_LANGUAGES := false
 TW_DEFAULT_LANGUAGE := ru
 TW_INCLUDE_NTFS_3G := true
 TW_USE_TOOLBOX := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TW_INCLUDE_LPTOOLS := true
-TW_INCLUDE_FASTBOOTD := true
+TW_SCREEN_BLANK_ON_BOOT := true
+TW_NO_SCREEN_BLANK := true
+TW_HAS_MTP := true
 
 # Display
-TW_SCREEN_BLANK_ON_BOOT := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
@@ -165,10 +159,9 @@ TW_CUSTOM_CPU_POS := "300"
 TW_CUSTOM_CLOCK_POS := "70"
 TW_CUSTOM_BATTERY_POS := "790"
 
-# Magiskboot & Resetprop (FIXED)
-TW_INCLUDE_REPACKING := true
+# resetprop and magiskboot
+TW_INCLUDE_REPACKTOOLS := true
 TW_INCLUDE_RESETPROP := true
-TW_INCLUDE_LIBRESETPROP := true
 TW_EXCLUDE_APEX := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
@@ -176,4 +169,4 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.
 TW_BACKUP_EXCLUSIONS := /data/fonts/files
 
 # Device 
-TW_DEVICE_VERSION := X6716_Fixed_by_Us
+TW_DEVICE_VERSION := X6716 by SK (FBEv2)
