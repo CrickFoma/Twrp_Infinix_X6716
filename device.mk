@@ -109,6 +109,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Копирование HAL-сервисов дешифровки в ramdisk
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/vendor/bin/hw/android.hardware.gatekeeper@1.0-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.gatekeeper@1.0-service \
-    $(DEVICE_PATH)/recovery/root/vendor/bin/hw/android.hardware.keymaster@4.1-service.trustonic:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.keymaster@4.1-service.trustonic \
-    $(DEVICE_PATH)/recovery/root/vendor/bin/hw/vendor.trustonic.tee@1.1-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/vendor.trustonic.tee@1.1-service
+    device/infinix/X6716/recovery/root/vendor/bin/hw/android.hardware.gatekeeper@1.0-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.gatekeeper@1.0-service \
+    device/infinix/X6716/recovery/root/vendor/bin/hw/android.hardware.keymaster@4.1-service.trustonic:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.keymaster@4.1-service.trustonic \
+    device/infinix/X6716/recovery/root/vendor/bin/hw/vendor.trustonic.tee@1.1-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/vendor.trustonic.tee@1.1-service
