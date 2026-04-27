@@ -150,3 +150,40 @@ on post-fs-data
 on boot
      start boot-hal-1-1
      start health-hal-2-1
+
+on post-fs-data
+    install_keyring
+
+# Демон драйвера TEE
+service mcDriverDaemon /vendor/bin/mcDriverDaemon
+    user root
+    group root
+    class core
+    seclabel u:r:recovery:s0
+
+# Сервис Gatekeeper
+service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
+    user root
+    group root
+    class hal
+    seclabel u:r:recovery:s0
+
+# Сервис Keymaster (Trustonic)
+service vendor.keymaster-4-1-trustonic /vendor/bin/hw/android.hardware.keymaster@4.1-service.trustonic
+    user root
+    group root
+    class hal
+    seclabel u:r:recovery:s0
+
+# Сервис TEE (Trustonic)
+service vendor.trustonic.tee-1-1 /vendor/bin/hw/vendor.trustonic.tee@1.1-service
+    user root
+    group root
+    class hal
+    seclabel u:r:recovery:s0
+
+# Триггер запуска расшифровки после инициализации TEE
+on property:vendor.sys.listener.registered=true
+    start vendor.trustonic.tee-1-1
+    start vendor.keymaster-4-1-trustonic
+    start gatekeeper-1-0
