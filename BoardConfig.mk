@@ -123,7 +123,11 @@ TW_HAS_NO_RECOVERY_PARTITION := true
 TW_NO_SCREEN_BLANK := true
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_HAS_MTP := true
-RECOVERY_SDCARD_ON_DATA := true							  
+RECOVERY_SDCARD_ON_DATA := true
+# Удовлетворяем проверку системы сборки TWRP (даже без GUI)
+TARGET_SCREEN_WIDTH := 1080
+TARGET_SCREEN_HEIGHT := 2400
+TW_THEME := portrait_hdpi
 
 # Display (Brightness)
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
