@@ -133,8 +133,8 @@ TW_HAS_NO_RECOVERY_PARTITION := true
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
 RECOVERY_SDCARD_ON_DATA := true							  
-TWRP_INCLUDE_LOGCAT := false
-TARGET_USES_LOGD := false
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
 TW_EXTRA_LANGUAGES := false
 TW_DEFAULT_LANGUAGE := ru
 TW_INCLUDE_NTFS_3G := false
