@@ -3,10 +3,8 @@
 # Copyright (C) 2020 The TWRP Open Source Project
 # Copyright (C) 2020 SebaUbuntu's TWRP device tree generator
 #
-# Licensed under the Apache License, Version 2.0
 
 ALLOW_MISSING_DEPENDENCIES := true
-
 DEVICE_PATH := device/infinix/X6716
 
 # Architecture
@@ -43,6 +41,7 @@ BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_KERNEL_SECOND_OFFSET := 0xbff88000
 BOARD_RAMDISK_OFFSET := 0x07c08000
 BOARD_DTB_OFFSET := 0x0bc08000
+
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 TARGET_KERNEL_ARCH := arm64
@@ -75,7 +74,7 @@ BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 3
 
-# === НАСТРОЙКИ ПЛАТФОРМЫ И ШИФРОВАНИЯ (ИЗМЕНЕНО ДЛЯ FBEv2) ===
+# === НАСТРОЙКИ ПЛАТФОРМЫ И ШИФРОВАНИЯ (FBEv2) ===
 PLATFORM_VERSION := 13
 PLATFORM_SECURITY_PATCH := 2023-10-05
 VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
@@ -86,20 +85,16 @@ TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := 2
 TW_PREPARE_DATA_MEDIA_EARLY := true
 
-# System as root
+# System as root & Partitions
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_SUPPRESS_SECURE_ERASE := true
-
-# Partitions configs
 BOARD_USES_RECOVERY_AS_BOOT := true
 TARGET_NO_RECOVERY := true
+BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata tranfs
-
-# Partitions size
-BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 
 # Dynamic Partitions
 BOARD_SUPER_PARTITION_SIZE := 9126805504
@@ -116,64 +111,48 @@ BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USES_MKE2FS := true
-
 TARGET_COPY_OUT_SYSTEM := system
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 
-# AB
-AB_OTA_UPDATER := true
-
-# Recovery
+# Recovery Settings & Screen Hacks
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 TW_HAS_NO_RECOVERY_PARTITION := true
-
-# TWRP specific build flags
-TW_THEME := portrait_hdpi
-RECOVERY_SDCARD_ON_DATA := true							  
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
-TW_EXTRA_LANGUAGES := false
-TW_DEFAULT_LANGUAGE := ru
-TW_INCLUDE_NTFS_3G := false
-TW_USE_TOOLBOX := false
-TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-TW_INCLUDE_LPTOOLS := false
 TW_NO_SCREEN_BLANK := true
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_HAS_MTP := true
+RECOVERY_SDCARD_ON_DATA := true							  
 
-# Display
+# Display (Brightness)
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
 
-# StatusBar
-TW_STATUS_ICONS_ALIGN := center
-TW_CUSTOM_CPU_POS := "300"
-TW_CUSTOM_CLOCK_POS := "70"
-TW_CUSTOM_BATTERY_POS := "790"
-
-# resetprop and magiskboot
+# === ОТЛАДКА И ЛОГИРОВАНИЕ (ВКЛЮЧЕНО) ===
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
 TW_INCLUDE_REPACKTOOLS := false
 TW_INCLUDE_RESETPROP := false
+
+# === ЖЕСТКАЯ ДИЕТА (УМЕЩАЕМСЯ В 33.5 МБ) ===
+# Отключаем GUI TWRP (приложение), чтобы освободить ~10-15 МБ под logd
+TW_EXCLUDE_TWRPAPP := true
+TW_EXCLUDE_EXFAT := true
+TW_INCLUDE_NTFS_3G := false
 TW_EXCLUDE_APEX := true
-TW_EXCLUDE_TWRPAPP := false
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.usb0/lun.%d/file
-TW_BACKUP_EXCLUSIONS := /data/fonts/files
-
-# Device 
-TW_DEVICE_VERSION := X6716 by SK (FBEv2)
-
-# Bypass ELF check for prebuilt binaries in PRODUCT_COPY_FILES
-BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
-
-# Дополнительно вырезаем тяжелые утилиты, чтобы влезть в 32 МБ
 TW_EXCLUDE_BASH := true
 TW_EXCLUDE_NANO := true
 TW_EXCLUDE_TZDATA := true
 TW_NO_LANGUAGE_SELECTION := true
+TW_EXTRA_LANGUAGES := false
+TW_USE_TOOLBOX := false
+TW_INCLUDE_LPTOOLS := false
+
+# Device 
+TW_DEVICE_VERSION := X6716_DEBUG_LOGS
+
+# Bypass ELF check for prebuilt binaries
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
